@@ -90,9 +90,15 @@ class MainActivity : AppCompatActivity() {
         val guess_3_check_text = findViewById(R.id.guess_3_check_text) as TextView
         val guess_3_check = findViewById(R.id.guess_3_check) as TextView
 
+        val winner_text = findViewById(R.id.winner_text) as TextView
         guess_button.setOnClickListener {
             hideKeyboard()
-
+            if(guessed_text.text.toString().uppercase() == word_to_guess){
+                winner_text.isVisible = true
+                reset_button.isVisible = true
+                guess_button.isVisible = false
+                guessed_text.isEnabled = false
+            }
             if (chance == 2){
                 guess_3_text.isVisible = true
                 guess_3.text = guessed_text.text.toString().uppercase()
@@ -104,6 +110,7 @@ class MainActivity : AppCompatActivity() {
                 word_to_guess_text.isVisible = true
                 guess_button.isVisible = false
                 reset_button.isVisible = true
+                guessed_text.isEnabled = false
 
             }
             if (chance == 1){
@@ -134,6 +141,8 @@ class MainActivity : AppCompatActivity() {
             guess_button.isVisible = true
             reset_button.isVisible= false
             chance = 0
+            winner_text.isVisible = false
+            guessed_text.isEnabled = true
             word_to_guess_text.isVisible = false
             word_to_guess = FourLetterWordList.getRandomFourLetterWord()
             word_to_guess_text.text = word_to_guess
