@@ -1,15 +1,32 @@
 package com.example.wordle
 
+import android.app.Activity
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 
 import android.widget.Button
 import android.widget.TextView
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 
 class MainActivity : AppCompatActivity() {
+    fun Fragment.hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
+    }
+
+    fun Activity.hideKeyboard() {
+        hideKeyboard(currentFocus ?: View(this))
+    }
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
     object FourLetterWordList {
         // List of most common 4 letter words from: https://7esl.com/4-letter-words/
         val fourLetterWords =
@@ -74,11 +91,12 @@ class MainActivity : AppCompatActivity() {
         val guess_3_check = findViewById(R.id.guess_3_check) as TextView
 
         guess_button.setOnClickListener {
+            hideKeyboard()
 
             if (chance == 2){
                 guess_3_text.isVisible = true
-                guess_3.text = guessed_text.text.toString()
-                guess_3_check.text = checkGuess(guessed_text.text.toString(),word_to_guess)
+                guess_3.text = guessed_text.text.toString().uppercase()
+                guess_3_check.text = checkGuess(guessed_text.text.toString().uppercase(),word_to_guess)
                 guess_3_check.isVisible = true
                 guess_3_check_text.isVisible = true
                 guess_3.isVisible = true
@@ -90,8 +108,8 @@ class MainActivity : AppCompatActivity() {
             }
             if (chance == 1){
                 guess_2_text.isVisible = true
-                guess_2.text = guessed_text.text.toString()
-                guess_2_check.text = checkGuess(guessed_text.text.toString(),word_to_guess)
+                guess_2.text = guessed_text.text.toString().uppercase()
+                guess_2_check.text = checkGuess(guessed_text.text.toString().uppercase(),word_to_guess)
                 guess_2_check.isVisible = true
                 guess_2_check_text.isVisible = true
                 guess_2.isVisible = true
@@ -99,8 +117,8 @@ class MainActivity : AppCompatActivity() {
             }
             if (chance == 0){
                 guess_1_text.isVisible = true
-                guess_1.text = guessed_text.text.toString()
-                guess_1_check.text = checkGuess(guessed_text.text.toString(),word_to_guess)
+                guess_1.text = guessed_text.text.toString().uppercase()
+                guess_1_check.text = checkGuess(guessed_text.text.toString().uppercase(),word_to_guess)
                 guess_1_check.isVisible = true
                 guess_1_check_text.isVisible = true
                 guess_1.isVisible = true
